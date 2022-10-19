@@ -1,0 +1,121 @@
+<div *ngIf="connection" class="profile__add__connection">
+    <div class="profile__connection__bg">
+        <div class="profile__connection__inner">
+            <button (click)="connection=false" class="profile__connection__close">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                  </svg>
+            </button>
+            <h1>Add a connection:</h1>
+            <input (input)="searchConnection($event)" class="connection__search" type="text" placeholder="search">
+            <div class="profile__list__connections">
+                <div *ngFor="let data of outConnections" class="profile__item__connection" (click)="addConnection(data.id)">
+                    <h3>User id: {{data.id}}</h3>
+                    <p><span><b>Name:</b> {{data.first_name}}</span> <span><b>Surname:</b> {{data.last_name}}</span></p>
+                    <p><span><b>Company:</b> {{data.company}}</span> <span><b>Email:</b> {{data.email}}</span></p>
+                    <p><span><b>Phone:</b> {{data.phone}}</span> <span><b>Tag:</b> {{data.tag}}</span></p>
+                </div>
+                <div *ngIf="outConnections.length===0" class="profile__no__match">
+                    <h1>No match</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="profile__component">
+    <div class="profile__links">
+        <a routerLink="/add-user">add user</a>
+        <a routerLink="/users">users</a>
+    </div>
+    <div *ngIf="currentUser!=undefined" class="profile">
+        <div *ngIf="!deleted" class="profile__photo">
+            <div (mouseover)="changePhoto=true" (mouseout)="changePhoto=false" class="profile__photo__inner" style="background-image: url('{{currentUser.photo}}');">
+                <div *ngIf="changePhoto" class="change__photo">
+                    <p>change photo</p>
+                </div>
+                <input (change)="changeProfilePhoto($event)" type="file" class="profile__select__file">
+            </div>
+            <div *ngIf="!showModify" class="profile__info">
+                <h1>User id: {{currentUser.id}}</h1>
+                <span>Name: {{currentUser.first_name}}</span>
+                <br>
+                <span>Surname: {{currentUser.last_name}}</span>
+                <br>
+                <span>Company: {{currentUser.company}}</span>
+                <br>
+                <span>Email: {{currentUser.email}}</span>
+                <br>
+                <span>Tag: {{currentUser.tag}}</span>
+                <h3>Additional information</h3>
+                <span>{{currentUser.notes}}</span>
+            </div>
+            <div *ngIf="showModify" class="profile__info">
+                <h1>User id: {{currentUser.id}}</h1>
+                <form [formGroup]="modify" class="profile__info__form">
+                    <span>Name: <input formControlName="first_name" type="text"></span>
+                    <br>
+                    <span>Surname: <input formControlName="last_name" type="text"></span>
+                    <br>
+                    <span>Company: <input formControlName="company" type="text"></span>
+                    <br>
+                    <span>Email: <input formControlName="email" type="text"></span>
+                    <br>
+                    <span>Tag: <input formControlName="tag" type="text"><button (click)="addTag()" class="add__tag">add</button></span>
+                    <div class="show__tags">
+                        <span *ngFor="let tag of tags"> 
+                            {{tag}}
+                            <div class="delete__tag" (click)="deleteTag(tag)">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                                        <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                                </svg>
+                            </div>
+                        </span>
+                    </div>
+                    <h3>Additional information</h3>
+                    <textarea formControlName="notes" class="profile__info__additional">Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur, quae. Fugit reprehenderit nesciunt eius ducimus ipsa tempora quaerat odit fuga nostrum aliquid eligendi corrupti deleniti aliquam assumenda, sint modi non?Maiores dicta atque quae sint sit? Distinctio quos maxime perferendis a ad delectus harum voluptatem. Illo dignissimos alias fuga officia, facilis ullam. Voluptates cumque non incidunt consectetur nulla nesciunt esse.Placeat minima aliquid sequi unde repellendus earum perferendis. Facere sunt eius ipsa corporis praesentium nemo unde dolore architecto assumenda, officia optio id doloremque pariatur dignissimos laudantium voluptatum, quisquam temporibus amet!
+                    </textarea>
+                    
+                    <button (click)="saveModification()" type="submit" class="profile__info__form__btn">Modify</button>
+                    <button (click)="showModify=false" class="profile__info__form__btn">Cancel</button>
+                </form>
+            </div>
+            <div class="profile__info__buttons">
+                <button [ngClass]="{modify__selected: showModify}" (click)="showModify=true; modifyView()" class="profile__modify__btn">modify information</button>
+                <button (click)="deleteUser()" class="profile__delete__btn">delete</button>
+            </div>
+        </div>
+        <div *ngIf="deleted" class="deleted__user">
+            <h1>User with id {{currentUser.id}} was deleted successfully</h1>
+        </div>
+        <div class="profile__direct__connections">
+            <h1>Direct connections: </h1>
+            <h1 class="profile__no__match" *ngIf="usersChildren && usersChildren.length===0">None</h1>
+            <div class="profile__connections">
+                <div *ngFor="let item of usersChildren" class="profile__connection">
+                    <button (click)="deleteConnection(item.user_table.id)" [ngClass]="{show__close: showModify}" class="connection__delete"> 
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                          </svg>
+                    </button>
+                    <a routerLink="/profile/{{item.user_table.id}}">
+                        <div class="profile__connection__img" style="background-image: url('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png');">
+        
+                        </div>
+                        <div class="profile__connection__name">
+                            <p>Name: {{item.user_table.first_name}} Surname: {{item.user_table.last_name}}</p>
+                        </div>
+                    </a>
+                </div>
+                <button (click)="showNewConnections()" class="profile__add__connections">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
+                      </svg>
+                </button>
+            </div>
+        </div>
+        
+    </div>
+    </div>
+
+

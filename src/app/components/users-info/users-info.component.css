@@ -1,0 +1,8 @@
+.info__view__profile{
+    background-color: rgb(75, 151, 223);
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    margin-top: 20px;
+    cursor: pointer;
+}

@@ -1,1 +1,684 @@
 /* You can add global styles to this file, and also import other style files */
+body{
+    margin: 0;
+    height: 100vh;
+    font-family: sans-serif;
+}
+
+nav{
+    width: 100%;
+    height: 50px;
+    position: fixed;
+    box-shadow: 0px -17px 14px 6px rgba(0,0,0,0.1),0px 10px 15px -3px rgba(0,0,0,0.1);
+    display: flex;
+    /* justify-content: center; */
+    z-index: 2;
+}
+
+.choose__user{
+    width: 100%;
+  min-height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  position: absolute;
+  left: 0;
+  z-index: 2;
+  display: flex;
+}
+
+/* .choose__user > h1{
+    position: absolute;
+    top: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+} */
+
+.choose__user__inner{   
+    align-self: center;
+    display: flex;
+    padding: 0 5%;
+    flex-wrap: wrap;
+    width: 100%;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.choose__user__inner > h1{
+    width: 100%;
+    text-align: center;
+}
+
+.pick__user__info{
+    background-color: rgba(228, 228, 228, 0.904);
+    padding: 30px;
+    width: 200px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin: 20px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.hide__pick{
+    position: absolute;
+    right: 10%;
+    top: 5%;
+    border: none;
+    background-color: transparent;
+}
+
+.hide__pick > svg{
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+}
+
+form{
+    align-self: center;
+    position: relative;
+    margin: 0 auto;
+}
+
+.autocomplete{
+    position: absolute;
+    width: 100%;
+    top: 40px;
+    right: 0;
+    background-color: white;
+    box-shadow: 0px 35px 26px -3px rgba(0,0,0,0.1);
+    border-radius: 10px;
+}
+
+.autocomplete__item{
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.autocomplete__item:hover{
+    background-color: rgb(75, 151, 223);
+}
+
+form > select{
+    border: none;
+}
+
+form > select:focus, form > select:active{
+    outline: none;
+}
+
+.search__icon{
+    cursor: pointer;
+}
+
+.add__usr__btn{
+    border: 2px solid rgb(49, 49, 49);
+    text-decoration: none;
+    color: black;
+    padding: 5px 20px;
+    border-radius: 10px;
+    align-self: center;
+    position: relative;
+    right: 10%;
+    cursor: pointer;
+    transition: all 1s;
+}
+
+.add__usr__btn:hover{
+    transition: all 1s;
+    background-color: rgb(49, 49, 49);
+    color: white;
+}
+
+.error__notification{
+    display: none;
+    position: absolute;
+    padding: 15px 30px;
+    background-color: rgb(255, 174, 174);
+    left: 50%;
+    transform: translateX(-50%);
+    top: 60px;
+    border-radius: 10px;
+    z-index: 1;
+    color: rgb(138, 0, 0);
+    font-size: 12px;
+}
+
+.error__required{
+    display: block;
+}
+
+.search__icon > svg{
+    color: rgba(88, 88, 88, 0.836);
+    position: relative;
+    top: 5px;
+    right: 5px;
+}
+
+form > input{
+    height: 20px;
+    margin-left: 20px;
+    border: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.192);
+}
+
+form > input:focus, form>input:active{
+    outline: none;
+}
+
+.tree{
+    height: 100vh;
+    width: 100%;
+}
+
+.line{
+    stroke-width:2px;
+  stroke:rgb(0,0,0);
+}
+
+.tree__content{
+    min-height: 50%;
+    position: relative;
+}
+
+.tree > svg{
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 50%;
+}
+
+.tree__inner{
+    position: absolute;
+    left: 50%;
+    top: 120px;
+    transform: translateX(-50%);
+}
+
+.node{
+    position: absolute;
+    height: 40px;
+    width: 40px;
+    border: 2px solid rgb(120, 174, 224);
+    border-radius: 50%;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.node__bg{
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    border-radius: 50%;
+    opacity: .5;
+    z-index: 1;
+}
+
+.node > p{
+    margin: 0;
+    position: relative;
+    bottom: 20px;
+    right: 30px;
+    width: max-content;
+    transition: 750;
+    background-color: white;
+}
+
+.child__num{
+    opacity: 0;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    color: white;
+    z-index: 5;
+}
+
+.tree__users__info{
+    border-radius: 15px;
+    /* position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%); */
+    padding: 50px 100px 50px 20px;
+    width: max-content;
+    box-shadow: 12px 2px 14px 6px rgba(0,0,0,0.1);
+}
+
+.no__info, .info{
+    width: 200px;
+}
+
+.info > h2{
+    margin-top: 0;
+}
+
+/* PROFILE */
+
+.profile__component{
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.profile__links{
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.profile__links > a{
+    border: 2px solid rgb(49, 49, 49);
+    background-color: transparent;
+    text-decoration: none;
+    color: black;
+    padding: 5px 20px;
+    border-radius: 10px;
+    align-self: center;
+    cursor: pointer;
+    transition: all 1s;
+}
+
+.profile__links > a:nth-child(1){
+    margin-right: 5px;
+}
+
+.profile__links > a:nth-child(2){
+    margin-left: 5px;
+}
+
+.profile__links > a:hover{
+    transition: all 1s;
+    background-color: rgb(49, 49, 49);
+    color: white;
+}
+
+.profile{
+    align-self: center;
+    margin-top: 50px;
+    min-height: 700px;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.profile__photo{
+    background-color: rgb(49, 49, 49);
+    width: 400px;
+    min-height: 600px;
+    align-self: center;
+    position: relative;
+    right: 100px;
+}
+
+.profile__info{
+    position: relative;
+    left: 250px;
+    background-color: white;
+    min-height: 600px;
+    padding: 20px 40px;
+    box-shadow: 10px 0px 11px 0px rgba(0,0,0,0.1);
+}
+
+.profile__info__form > span > input{
+    border: none;
+    background-color: rgb(203, 240, 255);
+}
+
+.profile__info__form > span > input:focus{
+    outline: none;
+}
+
+.show__tags{
+    margin-top: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    font-size: 12px;
+}
+  
+.show__tags > span{
+    position: relative;
+    border: 1px solid rgb(182, 182, 182);
+    border-radius: 10px;
+    padding: 2px 10px;
+}
+  
+.delete__tag{
+    position: absolute;
+    right: 4px;
+    top: -2px;
+    cursor: pointer;
+}
+
+.delete__tag > svg{
+    width: 8px;
+    height: 8px;
+    color: red;
+}
+
+.add__tag{
+    border: none;
+    background-color: black;
+    color: rgb(203, 240, 255);
+    padding: 0 10px;
+    cursor: pointer;
+    text-align: center;
+    margin-left: 10px;
+}
+
+.profile__info__form__btn{
+    box-shadow: none;
+    border: 2px solid black;
+    background-color: transparent;
+    font-weight: lighter;
+    cursor: pointer;
+    padding: 5px 15px;
+    float: right;
+    margin: 10px;
+}
+
+.profile__info__additional{
+    height: 254px;
+    width: 302px;
+    resize: none;
+    background-color: rgb(245, 252, 255);
+    border: none;
+    font-family: sans-serif;
+    line-height: 25px;
+}
+
+.profile__info__additional:focus{
+    outline: none;
+}
+
+.profile__info__additional::-webkit-scrollbar{
+    width: 10px;
+}
+
+.profile__info__additional::-webkit-scrollbar-thumb{
+    background-color: rgb(216, 216, 216);
+    border-radius: 5px;
+}
+
+.profile__photo__inner{
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    left: 20px;
+    top: 20px;
+    border-radius: 100%;
+    cursor: pointer;
+}
+
+.profile__select__file{
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    left: 0;
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.change__photo{
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    opacity: .5;
+    border-radius: 50%;
+    position: relative;
+}
+
+.change__photo > p{
+    position: absolute;
+    color: rgb(48, 192, 228);
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+.profile__info__buttons{
+    position: absolute;
+    bottom: 40px; 
+    left: 45px;
+    display: flex;
+    flex-direction: column;
+}
+
+.profile__modify__btn{
+    background-color: transparent;
+    color: white;
+    border: 2px solid white;
+    border-radius: 10px;
+    padding: 10px 20px;
+    width: 160px;
+    cursor: pointer;
+    margin-bottom: 15px;
+}
+
+.modify__selected{
+    background-color: rgb(203, 240, 255);
+    border-color: rgb(48, 192, 228);
+    color: black;
+}
+
+.profile__modify__btn:hover{
+    background-color: rgb(203, 240, 255);
+    border-color: rgb(48, 192, 228);
+    color: black;
+}
+
+.profile__delete__btn{
+    background-color: transparent;
+    color: white;
+    border: 2px solid white;
+    border-radius: 10px;
+    padding: 10px 20px;
+    width: 160px;
+    cursor: pointer;
+}
+
+.profile__delete__btn:hover{
+    background-color: rgb(253, 231, 231);
+    border-color: rgb(255, 75, 75);
+    color: black;
+}
+
+/* CONNECTIONS */
+
+.profile__direct__connections{
+    align-self: center;
+}
+
+.profile__direct__connections > h1{
+    text-align: center;
+    margin-top: 0;
+    position: relative;
+}
+
+.profile__connections{
+    height: 560px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding-left: 60px;
+}
+
+.profile__connections::-webkit-scrollbar {
+    width: 15px;
+  }
+  
+.profile__connections::-webkit-scrollbar-thumb{
+    background-color: black;
+}
+
+.profile__connection{
+    min-width: 400px;
+    height: 100px; 
+    margin: 10px;
+    box-shadow: 0px 0px 16px -3px rgba(0,0,0,0.1);
+    cursor: pointer;
+    text-decoration: none;
+    color: black;
+    position: relative;
+    display: flex;
+}
+
+.profile__connection > a{
+    width: 100%;
+    align-self: center;
+    display: flex;
+    justify-content: space-around;
+    text-decoration: none;
+    color: black;
+}
+
+.connection__delete{
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    display: none;
+}
+
+.show__close{
+    display: block;
+}
+
+.profile__connection:hover{
+    box-shadow: 0px 10px 14px 7px rgba(0,0,0,0.1);
+}
+
+.profile__connection__img{
+    width: 60px;
+    height: 60px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    border-radius: 50%;
+    align-self: center;
+}
+
+.profile__connection__name{
+    align-self: center;
+}
+
+.profile__add__connections{
+    width: 100%;
+    background-color: rgb(239, 248, 252);
+    border: none;
+    cursor: pointer;
+    box-shadow: 0px 10px 15px 0px rgba(0,0,0,0.1);
+}
+
+.profile__add__connections > svg{
+    width: 30px;
+    height: 30px;
+}
+
+.profile__add__connection{
+    position: absolute;
+    width: 100%;
+    min-height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(1px);
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+}
+
+.profile__list__connections{
+    min-width: 300px;
+    height: 300px;
+    align-self: center;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.profile__item__connection{
+    background-color: white;
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 15px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.profile__item__connection > p{
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;  
+  }
+  
+.profile__item__connection >p>span{
+    width: max-content;
+    margin: 0 10px;
+}
+  
+.profile__item__connection > h3{
+    margin-top: 0;
+}
+
+.profile__connection__inner{
+    background-color: rgb(49, 49, 49); 
+    padding: 20px;
+    position: relative;
+    left: 10px;
+    bottom: 10px;
+}
+
+.profile__connection__inner > h1{
+    color: white;
+}
+
+.profile__connection__bg{
+    align-self: center;
+    background-color: rgb(97 205 249);
+}
+
+.profile__connection__close{
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    color: white;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.profile__connection__close > svg{
+    width: 25px;
+    height: 25px;
+}
+
+.connection__search{
+    border-radius: 5px;
+    border: 1px solid black;
+}
+
+.connection__search:focus{
+    outline: none;
+}
+
+.profile__no__match{
+    color: rgb(110, 110, 110);
+    text-align: left!important;
+}
+
+.deleted__user{
+    color: rgb(110, 110, 110);
+    align-self: center;
+}
+
+
+
