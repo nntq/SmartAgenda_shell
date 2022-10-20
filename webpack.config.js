@@ -35,9 +35,9 @@ module.exports = {
         // },        
         
         // For hosts (please adjust)
-        remotes: {
-            home: "addUser@http://localhost:8080/remoteEntry.js",
-        },
+        // remotes: {
+        //     home: "addUser@http://localhost:8080/remoteEntry.js",
+        // },
 
         shared: share({
           "@angular/core": { singleton: true, strictVersion: true, requiredVersion: 'auto' }, 
