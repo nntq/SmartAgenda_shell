@@ -35,9 +35,9 @@ module.exports = {
       // },
 
       // For hosts (please adjust)
-      remotes: {
-        home: "addUser@https://smart-agenda.gate42.it/add-user/remoteEntry.js",
-      },
+      // remotes: {
+      //   home: "addUser@https://smart-agenda.gate42.it/add-user/remoteEntry.js",
+      // },
 
       shared: share({
         "@angular/core": { singleton: true, strictVersion: true, requiredVersion: 'auto' },

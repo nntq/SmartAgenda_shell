@@ -1,9 +1,9 @@
-import { loadRemoteModule } from '@angular-architects/module-federation';
 import { NgModule } from '@angular/core'
 import {RouterModule, Routes} from '@angular/router'
 import { WebComponentWrapper, WebComponentWrapperOptions } from '@angular-architects/module-federation-tools';
 import { TreeComponent } from 'src/app/components/tree/tree.component';
 import { ProfileComponent } from 'src/app/components/profile/profile.component';
+import {environment} from '../../../environments/environment';
 
 const appRoutes: Routes = [
   {path: 'users', component: TreeComponent},
@@ -11,7 +11,7 @@ const appRoutes: Routes = [
     path: 'add-user',
     component: WebComponentWrapper,
     data: {
-      remoteEntry: 'http://localhost:8080/remoteEntry.js',
+      remoteEntry: `${environment.add_user_path}/remoteEntry.js`,
       remoteName: 'addUser',
       exposedModule: './Add',
       elementName: 'react-element'
