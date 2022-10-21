@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core'
 import {RouterModule, Routes} from '@angular/router'
-import { WebComponentWrapper, WebComponentWrapperOptions } from '@angular-architects/module-federation-tools';
+import { WebComponentWrapper } from '@angular-architects/module-federation-tools';
 import { TreeComponent } from 'src/app/components/tree/tree.component';
 import { ProfileComponent } from 'src/app/components/profile/profile.component';
 import {environment} from '../../../environments/environment';
