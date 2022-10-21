@@ -23,6 +23,10 @@
     </div>
 </div>
 
+<div *ngIf="failed" class="warning">
+    <span>Something went wrong, retry</span>
+  </div>
+
 <div class="profile__component">
     <div class="profile__links">
         <a routerLink="/add-user">add user</a>

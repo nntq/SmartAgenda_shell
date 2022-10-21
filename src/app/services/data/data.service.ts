@@ -16,69 +16,108 @@ export class DataService {
 
   async updatePhoto(id: number, file: any){
     const imgs = (await this.supabase.storage.from('avatars').list()).data
+
     if(imgs && imgs.length>1){
       const img_name = (imgs.filter(el => el.name.includes(`id${id}`)))[0].name; 
-      await this.supabase.storage.from('avatars').remove([img_name]);
+      let res:any = await this.supabase.storage.from('avatars').remove([img_name]);
+      if(res.error){
+        return res;
+      }
       const new_img_name = `id${id}_${Date.now()}.jpeg`;
-      await this.supabase.storage.from('avatars').upload(new_img_name, file);
+      res = await this.supabase.storage.from('avatars').upload(new_img_name, file);
+      if(res.error){
+        return res;
+      }
       const fUrl:any = await this.supabase.storage.from('avatars').getPublicUrl(new_img_name);
       this.observable.next(fUrl);
-      await this.supabase
+      res = await this.supabase
         .from('user_table')
         .update({photo: fUrl.data.publicURL})
         .eq('id', id)
+      if(res.error){
+        return res;
+      }
     }else{
       const new_img_name = `id${id}_${Date.now()}.jpeg`;
-      await this.supabase.storage.from('avatars').upload(new_img_name, file);
+      let res:any = await this.supabase.storage.from('avatars').upload(new_img_name, file);
+      if(res.error){
+        return res;
+      }
       const fUrl:any = await this.supabase.storage.from('avatars').getPublicUrl(new_img_name);
       this.observable.next(fUrl);
-      await this.supabase
+      res = await this.supabase
         .from('user_table')
         .update({photo: fUrl.data.publicURL})
         .eq('id', id)
+
+      if(res.error){
+        return res;
+      }
     }
     
   }
 
   async deleteUser(id:number){
-    await this.supabase
+
+    let res = await this.supabase
       .from('collegato')
       .delete()
-      .eq('u_1',id);
+      .or(`u_1.eq.${id},u_2.eq.${id}`)
 
-    await this.supabase
+    if(res.error===null){
+      res = await this.supabase
       .from('user_table')
       .delete()
       .eq('id',id);
+
+      if(res.error!==null){
+        return res;
+      }
+    }else{
+      return res;
+    }
 
     const imgs = (await this.supabase.storage.from('avatars').list()).data
     if(imgs){
       if((imgs.filter(el => el.name.includes(`id${id}`)))[0] !== undefined){
         const img_name = (imgs.filter(el => el.name.includes(`id${id}`)))[0].name;
-        await this.supabase.storage.from('avatars').remove([img_name]);
+        let res = await this.supabase.storage.from('avatars').remove([img_name]);
+        return res;
       }
     }
+
+    return;
+
   }
 
   async insertConnection(id_1:number, id_2: number){
-    await this.supabase
+    let res = await this.supabase
       .from('collegato')
       .insert({u_1: id_1, u_2: id_2})
+
+
+    return res;
   }
 
   async deleteConnection(id_1:number, id_2: number){
-    await this.supabase
+    let res = await this.supabase
       .from('collegato')
       .delete()
       .eq('u_1',id_1)
       .eq('u_2',id_2);
+
+    return res;
+    
   }
 
   async updateInfo(id:number, data:any){
-    await this.supabase
+    let res = await this.supabase
       .from('user_table')
       .update(data)
       .eq('id',id)
+
+    return res;
+
   }
 
   async getAllUsers(){

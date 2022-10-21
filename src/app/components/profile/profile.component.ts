@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormControlName, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from 'src/app/services/data/data.service';
 
 @Component({
@@ -17,6 +17,7 @@ export class ProfileComponent implements OnInit {
   showModify: boolean = false;
   connection: boolean = false;
   deleted: boolean = false;
+  failed: boolean = false;
   outConnections: any = [];
   connections: any = [];
   tags: any = [];
@@ -25,10 +26,16 @@ export class ProfileComponent implements OnInit {
   modify: FormGroup;
 
   changeProfilePhoto(val:any){
-    this.data.updatePhoto(this.currentId,val.target.files[0]);
+    let res:any = this.data.updatePhoto(this.currentId,val.target.files[0]);
+    if(res?.error){
+      this.failed = true;
+      setTimeout(() => {
+        this.failed = false;
+      }, 2000);
+    }
   }
 
-  constructor(private route: ActivatedRoute, private data: DataService) {
+  constructor(private route: ActivatedRoute, private data: DataService, private router: Router) {
     
     this.modify = new FormGroup({
       first_name: new FormControl(''),
@@ -50,6 +57,10 @@ export class ProfileComponent implements OnInit {
     this.route.params.subscribe(async (params)=>{
       this.currentId = <number>(params['id']);
       this.currentUser = (await this.data.fidUserById(this.currentId))[0]
+      if(!this.currentUser){
+        this.router.navigate(['users']);
+        return;
+      }
       this.usersChildren = await this.data.getChildren(this.currentId);
       this.modify = new FormGroup({
         first_name: new FormControl(this.currentUser.first_name),
@@ -98,10 +109,18 @@ export class ProfileComponent implements OnInit {
       tag: this.tags,
       notes: this.modify.get('notes')?.value
     };
-    await this.data.updateInfo(this.currentId,data);
+    let res = await this.data.updateInfo(this.currentId,data);
+
+    if(res?.error){
+      this.failed = true;
+      setTimeout(() => {
+        this.failed = false;
+      }, 2000);
+    }else{
+      this.currentUser = {id: this.currentId, ...data, photo: this.currentUser.photo};
+      this.showModify = false;
+    }
     
-    this.currentUser = {id: this.currentId, ...data, photo: this.currentUser.photo};
-    this.showModify = false;
   }
 
   filterConnectionsChildren(connections:any){
@@ -118,31 +137,46 @@ export class ProfileComponent implements OnInit {
 
   async showNewConnections(){
     let connections = await this.data.getAllUsers();
-    connections = connections.filter(el => JSON.stringify(el)!==JSON.stringify(this.currentUser));
-
-
-
-    connections = this.filterConnectionsChildren(connections);
-    this.connections = connections;
-    this.outConnections = connections;
-    this.connection = true;
+    if(connections.length!==0){
+      connections = connections.filter(el => JSON.stringify(el)!==JSON.stringify(this.currentUser));
+      connections = this.filterConnectionsChildren(connections);
+      this.connections = connections;
+      this.outConnections = connections;
+      this.connection = true;
+    }
   }
 
   async addConnection(id:number){
-    this.data.insertConnection(this.currentId, id);
-    this.usersChildren.push({user_table: (this.connections.filter((el:any)=>el.id===id))[0]});
-    this.connection = false;
-    let connections = this.searchConnection(this.connections);
-    this.connections = connections;
-    this.outConnections = connections;
+    let res = await this.data.insertConnection(this.currentId, id);
+
+    if(res?.error){
+      this.failed = true;
+      setTimeout(() => {
+        this.failed = false;
+      }, 2000);
+    }else{
+      this.usersChildren.push({user_table: (this.connections.filter((el:any)=>el.id===id))[0]});
+      this.connection = false;
+      let connections = this.searchConnection(this.connections);
+      this.connections = connections;
+      this.outConnections = connections;
+    }
+
   }
 
   async deleteConnection(id:number){
-    this.data.deleteConnection(this.currentId, id);
-    this.usersChildren = this.usersChildren.filter((el:any) => el.user_table.id!==id)
-    let connections = this.searchConnection(this.connections);
-    this.connections = connections;
-    this.outConnections = connections;
+    let res = await this.data.deleteConnection(this.currentId, id);
+    if(res?.error){
+      this.failed = true;
+      setTimeout(() => {
+        this.failed = false;
+      }, 2000);
+    }else{
+      this.usersChildren = this.usersChildren.filter((el:any) => el.user_table.id!==id)
+      let connections = this.searchConnection(this.connections);
+      this.connections = connections;
+      this.outConnections = connections;
+    }
   }
 
   async searchConnection(name:any){
@@ -174,10 +208,15 @@ export class ProfileComponent implements OnInit {
     }
   
   async deleteUser(){
-    await this.data.deleteUser(this.currentId);
-    this.deleted = true;
+    let res = await this.data.deleteUser(this.currentId);
+    console.log(res?.error)
+    if(res?.error){
+      this.failed = true;
+      setTimeout(() => {
+        this.failed = false;
+      }, 2000);
+    }else{
+      this.deleted = true;
+    }
   }
-
-
-
 }

@@ -8,6 +8,7 @@ import { TreeComponent } from './components/tree/tree.component';
 import { SearchComponent } from './components/search/search.component';
 import { UsersInfoComponent } from './components/users-info/users-info.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { UsersListComponent } from './components/users-list/users-list.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { ProfileComponent } from './components/profile/profile.component';
     TreeComponent,
     SearchComponent,
     UsersInfoComponent,
-    ProfileComponent
+    ProfileComponent,
+    UsersListComponent
   ],
   imports: [
     BrowserModule,

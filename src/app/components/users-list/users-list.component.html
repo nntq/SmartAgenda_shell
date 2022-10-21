@@ -1,0 +1,13 @@
+<div *ngIf="users" class="users__list__bg">
+    <div class="users__list__inner">
+        <h1>Users</h1>
+        <div *ngFor="let item of users" class="item__user">
+            <img class="item__user__img" src="{{item.photo}}" >
+            <div class="item__user__info">
+                <span>Surname: {{item.last_name}}</span>
+                <span>Name: {{item.first_name}}</span>
+                <button (click)="select(item.id)">visualize</button>
+            </div>
+        </div>
+    </div>
+</div>
