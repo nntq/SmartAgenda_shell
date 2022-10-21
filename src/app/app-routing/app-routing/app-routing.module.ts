@@ -11,7 +11,7 @@ const appRoutes: Routes = [
     path: 'add-user',
     component: WebComponentWrapper,
     data: {
-      remoteEntry: `${environment.add_user_path}/remoteEntry.js`,
+      remoteEntry: `${environment.add_user_path}/add-user/remoteEntry.js`,
       remoteName: 'addUser',
       exposedModule: './Add',
       elementName: 'react-element'
