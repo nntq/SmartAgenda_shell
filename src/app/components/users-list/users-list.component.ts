@@ -26,7 +26,6 @@ export class UsersListComponent implements OnInit {
 
   async ngOnInit() {
     this.users = await this.data.getAllUsers();
-    console.log(this.users)
   }
 
 }

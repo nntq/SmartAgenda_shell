@@ -16,42 +16,44 @@ export class DataService {
 
   async updatePhoto(id: number, file: any){
     const imgs = (await this.supabase.storage.from('avatars').list()).data
-
-    if(imgs && imgs.length>1){
-      const img_name = (imgs.filter(el => el.name.includes(`id${id}`)))[0].name; 
-      let res:any = await this.supabase.storage.from('avatars').remove([img_name]);
-      if(res.error){
-        return res;
-      }
-      const new_img_name = `id${id}_${Date.now()}.jpeg`;
-      res = await this.supabase.storage.from('avatars').upload(new_img_name, file);
-      if(res.error){
-        return res;
-      }
-      const fUrl:any = await this.supabase.storage.from('avatars').getPublicUrl(new_img_name);
-      this.observable.next(fUrl);
-      res = await this.supabase
-        .from('user_table')
-        .update({photo: fUrl.data.publicURL})
-        .eq('id', id)
-      if(res.error){
-        return res;
-      }
-    }else{
-      const new_img_name = `id${id}_${Date.now()}.jpeg`;
-      let res:any = await this.supabase.storage.from('avatars').upload(new_img_name, file);
-      if(res.error){
-        return res;
-      }
-      const fUrl:any = await this.supabase.storage.from('avatars').getPublicUrl(new_img_name);
-      this.observable.next(fUrl);
-      res = await this.supabase
-        .from('user_table')
-        .update({photo: fUrl.data.publicURL})
-        .eq('id', id)
-
-      if(res.error){
-        return res;
+    if(imgs){
+      const img = (imgs.filter(el => el.name.includes(`id${id}`)))[0];
+      if(img){
+        const img_name = img.name;
+        let res:any = await this.supabase.storage.from('avatars').remove([img_name]);
+              if(res.error){
+                return res;
+              }
+              const new_img_name = `id${id}_${Date.now()}.jpeg`;
+              res = await this.supabase.storage.from('avatars').upload(new_img_name, file);
+              if(res.error){
+                return res;
+              }
+              const fUrl:any = await this.supabase.storage.from('avatars').getPublicUrl(new_img_name);
+              this.observable.next(fUrl);
+              res = await this.supabase
+                .from('user_table')
+                .update({photo: fUrl.data.publicURL})
+                .eq('id', id)
+              if(res.error){
+                return res;
+              }
+      }else{
+        const new_img_name = `id${id}_${Date.now()}.jpeg`;
+        let res:any = await this.supabase.storage.from('avatars').upload(new_img_name, file);
+        if(res.error){
+          return res;
+        }
+        const fUrl:any = await this.supabase.storage.from('avatars').getPublicUrl(new_img_name);
+        this.observable.next(fUrl);
+        res = await this.supabase
+          .from('user_table')
+          .update({photo: fUrl.data.publicURL})
+          .eq('id', id)
+  
+        if(res.error){
+          return res;
+        }
       }
     }
     
