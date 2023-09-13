@@ -90,10 +90,11 @@ export class TreeComponent implements OnInit, AfterViewInit {
 
   update(source:any){
 
-    const click = (d:any) => {
+    const click = (inp:any) => {
       this.clickCount++;
+      let d = inp.target.__data__;
       setTimeout(() => {
-        if (this.clickCount === 1) {
+        if (this.clickCount === 1) { 
           if(d.children!==undefined&&d._children!==undefined){
             if(d.children!==null){  
               d._children = d.children;
